@@ -15,7 +15,8 @@ class App extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.isNumber = this.isNumber.bind(this);
     this.resetValues = this.resetValues.bind(this);
-    this.storingNums =this.storingNums.bind(this);
+    this.storingNums = this.storingNums.bind(this);
+    this.defineMathOp = this.defineMathOp.bind(this);
   }
 
   //When user clicks clear the state is returned to initial values
@@ -35,24 +36,56 @@ class App extends React.Component {
 
   //stores first and second values to wait for the "equals" call
   storingNums(num) {
+    let isFirstVal = (this.state.firstValue !== '');
+    let isMathOp = (this.state.mathOp !== '');
+    let isSecondVal = (this.state.secondValue !== '');
     //If the 1st val is empty we just store the number passed
-    if(this.state.firstValue === ''){
+    if(!isFirstVal){
       this.setState({
         firstValue: num,
         currentDisplay: num,
         operationDisplay: this.state.operationDisplay + num
       });
 
-      //If there is no Math Operation defined then we want to continue concatenating numbers
-    }else if(this.state.mathOp === ''){
+      //If there is no Math Operation defined then we want to continue concatenating numbers to the 1st val
+    }else if(isFirstVal && !isMathOp){
       this.setState({
         firstValue: this.state.firstValue + num,
         currentDisplay: this.state.currentDisplay + num,
         operationDisplay: this.state.operationDisplay + num
       });
+      //If there is already an operation defined we want to store the 2nd value
+    }else if(isMathOp && !isSecondVal){
+      this.setState({
+        secondValue: num,
+        currentDisplay: num,
+        operationDisplay: this.state.operationDisplay + num
+      });
     }
   }
 
+  // stores the math operation into the state
+  defineMathOp(sign) {
+    if(this.state.firstValue === '') {
+      this.setState({
+        currentDisplay: 'Please enter a number first',
+        operationDisplay: 'Press clear to exit'
+      });
+      //Only set it if there is no sign
+    } else if(this.state.mathOp === ''){
+      this.setState({
+        mathOp: sign,
+        currentDisplay: sign,
+        operationDisplay: this.state.operationDisplay + sign
+      });
+    } else if (this.state.mathOp !== '') {
+      this.setState({
+        mathOp: sign,
+        currentDisplay: sign,
+        operationDisplay: this.state.operationDisplay.substring(0, this.state.operationDisplay.length-1) + sign
+      });
+    }
+  }
 
   // Gets the button value and redirects to the correct function
   handleClick(btnVal) {
@@ -72,7 +105,7 @@ class App extends React.Component {
           //Do some stuff
           break;
         default:
-          //any other math op
+          this.defineMathOp(btnVal);
           break;
       }
     }
