@@ -8,14 +8,20 @@ class App extends React.Component {
       firstValue: '',
       secondValue: '',
       mathOp: '',
-      currentDisplay: '',
+      currentDisplay: '0',
       operationDisplay: ''
     }
   }
   render() {
     return (
       <div className="App">
-     
+        <div className='calculator-body'>
+          <div className='display'>
+            <div className='full-operation'></div>
+            <div className='current-value'></div>
+          </div>
+          <div className='btn-container'></div>
+        </div>
       </div>
     );
 }
