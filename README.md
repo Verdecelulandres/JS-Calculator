@@ -4,5 +4,7 @@ https://www.freecodecamp.org/learn/front-end-development-libraries/front-end-dev
 
 <-----------------SOURCES------------------------>
     1. https://www.cdnfonts.com/calculator.font
+    2. https://www.basedash.com/blog/how-to-check-if-a-string-is-a-number-in-javascript
 
     Used #1 to get a Calculator font
+    Used #2 to understand how to check if a string is a number
