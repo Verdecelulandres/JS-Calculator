@@ -92,7 +92,8 @@ class App extends React.Component {
     
       if(!currentVal.includes('.') && currentVal.length < 6){ //Doesn't contain a '.' already
         this.setState({
-          currentDisplay: this.state.currentDisplay + '.'
+          currentDisplay: this.state.currentDisplay + '.',
+          operationDisplay: this.state.operationDisplay + '.'
         });
         if(this.state.mathOp === ''){
           this.setState({
@@ -108,24 +109,26 @@ class App extends React.Component {
 
   // stores the math operation into the state
   defineMathOp(sign) {
-    if(this.state.firstValue === '') {
-      this.setState({
-        currentDisplay: 'Please enter a number first',
-        operationDisplay: 'Press clear to exit'
-      });
-      //Only set it if there is no sign
-    } else if(this.state.mathOp === ''){
-      this.setState({
-        mathOp: sign,
-        currentDisplay: sign,
-        operationDisplay: this.state.operationDisplay + sign
-      });
-    } else if (this.state.mathOp !== '') {
-      this.setState({
-        mathOp: sign,
-        currentDisplay: sign,
-        operationDisplay: this.state.operationDisplay.substring(0, this.state.operationDisplay.length-1) + sign
-      });
+    if(this.state.currentDisplay.indexOf('.') !== this.state.currentDisplay.length-1){
+      if(this.state.firstValue === '') {
+        this.setState({
+          currentDisplay: 'Please enter a number first',
+          operationDisplay: 'Press clear to exit'
+        });
+        //Only set it if there is no sign
+      } else if(this.state.mathOp === ''){
+        this.setState({
+          mathOp: sign,
+          currentDisplay: sign,
+          operationDisplay: this.state.operationDisplay + sign
+        });
+      } else if (this.state.mathOp !== '') {
+        this.setState({
+          mathOp: sign,
+          currentDisplay: sign,
+          operationDisplay: this.state.operationDisplay.substring(0, this.state.operationDisplay.length-1) + sign
+        });
+      }
     }
   }
 
