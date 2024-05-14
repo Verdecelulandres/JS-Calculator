@@ -13,22 +13,70 @@ class App extends React.Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.isNumber = this.isNumber.bind(this);
+    this.resetValues = this.resetValues.bind(this);
+    this.storingNums =this.storingNums.bind(this);
   }
+
+  //When user clicks clear the state is returned to initial values
+  resetValues() {
+    this.setState({
+      firstValue: '',
+      secondValue: '',
+      mathOp: '',
+      currentDisplay: '0',
+      operationDisplay: ''
+    });
+  }
+  //Returns true if the string provided is a umber and false otherwise
   isNumber(val) {
     return !isNaN(Number(val));
   }
-  // Functions here:
+
+  //stores first and second values to wait for the "equals" call
+  storingNums(num) {
+    //If the 1st val is empty we just store the number passed
+    if(this.state.firstValue === ''){
+      this.setState({
+        firstValue: num,
+        currentDisplay: num,
+        operationDisplay: this.state.operationDisplay + num
+      });
+
+      //If there is no Math Operation defined then we want to continue concatenating numbers
+    }else if(this.state.mathOp === ''){
+      this.setState({
+        firstValue: this.state.firstValue + num,
+        currentDisplay: this.state.currentDisplay + num,
+        operationDisplay: this.state.operationDisplay + num
+      });
+    }
+  }
+
+
+  // Gets the button value and redirects to the correct function
   handleClick(btnVal) {
 
-    if(isNumber(btnVal)){
-      
+    if(this.isNumber(btnVal)){
+      this.storingNums(btnVal);
     }
     else {
-
+      switch(btnVal){
+        case 'CLR':
+          this.resetValues();
+          break;
+        case '=':
+          //Do some stuff
+          break;
+        case '.':
+          //Do some stuff
+          break;
+        default:
+          //any other math op
+          break;
+      }
     }
-    this.setState({
-      currentDisplay: btnVal
-    });
+  
   }
 
   render() {
@@ -36,7 +84,7 @@ class App extends React.Component {
       <div className="App">
         <div className='calculator-body'>
           <div id='display' className='display-container'>
-            <div className='full-operation'></div>
+            <div className='full-operation'>{this.state.operationDisplay}</div>
             <div className='current-value'>{this.state.currentDisplay}</div>
           </div>
           <div className='btn-container'>

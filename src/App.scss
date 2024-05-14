@@ -23,7 +23,6 @@ $columns: 12;
 .display-container {
   height:100px;
   background-color: black;
-  font-size: 35px;
   border: 5px ridge black;
 }
 
@@ -34,6 +33,7 @@ $columns: 12;
   justify-content: flex-end;
   padding-right: 10px;
   color: yellow;
+  font-size: 20px;
 }
 .current-value {
   height:45px;
@@ -42,6 +42,7 @@ $columns: 12;
   justify-content: flex-end;
   color: rgb(5, 172, 5);
   padding-right: 10px;
+  font-size: 35px;
 }
 
 .btn-container{
