@@ -51,6 +51,9 @@ $columns: 12;
   border: 5px ridge black;
 }
 
+button:hover {
+  color: white;
+}
 
 button[class^="col-"] {
   background-color: darkgray;
