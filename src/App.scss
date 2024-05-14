@@ -1,4 +1,14 @@
+$columns: 12;
+
 .App {
   text-align: center;
 }
 
+
+
+//Creates the grid system I will be using.
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 calc((100% / $columns) *$i);
+  }
+}
