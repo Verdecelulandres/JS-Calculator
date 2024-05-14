@@ -17,8 +17,10 @@ class App extends React.Component {
       <div className="App">
         <div className='calculator-body'>
           <div id='display' className='display-container'>
+     
             <div className='full-operation'></div>
             <div className='current-value'>{this.state.currentDisplay}</div>
+        
           </div>
           <div className='btn-container'>
             {/* First row */}
@@ -33,7 +35,7 @@ class App extends React.Component {
             <button className='col-3' id="four">4</button>
             <button className='col-3' id="five">5</button>
             <button className='col-3' id="six">6</button>
-            <button className='col-3' id="subtract">-</button>
+            <button className='col-3'  id="subtract">-</button>
             {/* Fourth row */}
             <button className='col-3' id="one">1</button>
             <button className='col-3' id="two">2</button>
@@ -45,6 +47,7 @@ class App extends React.Component {
             <button className='col-3' id="equals">=</button>
           </div>
         </div>
+        <h1>Coded by <span style={{color: 'darkcyan'}}>Andres Laverde</span></h1>
       </div>
     );
 }
