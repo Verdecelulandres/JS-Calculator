@@ -22,7 +22,7 @@ class App extends React.Component {
           </div>
           <div className='btn-container'>
             {/* First row */}
-            <button className='col-9' id="clear">Clear</button>
+            <button className='col-9' id="clear">clear</button>
             <button className='col-3'  id="multiply">X</button>
             {/* second row */}
             <button className='col-3' id="seven">7</button>

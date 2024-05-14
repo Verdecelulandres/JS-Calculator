@@ -1,6 +1,8 @@
 $columns: 12;
 * {
   box-sizing: border-box;
+  font-family: monospace;
+  font-weight: bold;
   border: 1px solid black;
 }
 .App {
@@ -17,6 +19,9 @@ $columns: 12;
 
 .display-container {
   height:100px;
+  background-color: black;
+  font-size: 30px;
+
 }
 .full-operation {
   height:50px;
@@ -24,6 +29,7 @@ $columns: 12;
   align-items: center;
   justify-content: flex-end;
   padding-right: 10px;
+  color: yellow;
 
 }
 .current-value {
@@ -32,7 +38,7 @@ $columns: 12;
   align-items: center;
   justify-content: flex-end;
   padding-right: 10px; 
-
+  color: rgb(5, 172, 5);
 }
 
 .btn-container{
@@ -40,6 +46,21 @@ $columns: 12;
   display: flex;
   flex-flow: row wrap;
 }
+
+button[class^="col-"] {
+  background-color: darkgray;
+}
+
+#clear {
+  background-color: darkred;
+  color: white;
+}
+
+#equals {
+  background-color: rgb(25, 25, 102);
+  color: white;
+}
+
 
 //Creates the grid system I will be using.
 @for $i from 1 through $columns {
