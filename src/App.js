@@ -16,33 +16,33 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className='calculator-body'>
-          <div className='display'>
+          <div id='display' className='display-container'>
             <div className='full-operation'></div>
             <div className='current-value'>{this.state.currentDisplay}</div>
           </div>
           <div className='btn-container'>
             {/* First row */}
-            <button id="clear"></button>
-            <button id="multiply"></button>
+            <button className='col-9' id="clear">Clear</button>
+            <button className='col-3'  id="multiply">X</button>
             {/* second row */}
-            <button id="seven"></button>
-            <button id="eight"></button>
-            <button id="nine"></button>
-            <button id="divide"></button>
+            <button className='col-3' id="seven">7</button>
+            <button className='col-3' id="eight">8</button>
+            <button id="nine" className='col-3'>9</button>
+            <button className='col-3' id="divide">/</button>
             {/* Third row */}
-            <button id="four"></button>
-            <button id="five"></button>
-            <button id="six"></button>
-            <button id="subtract"></button>
+            <button className='col-3' id="four">4</button>
+            <button className='col-3' id="five">5</button>
+            <button className='col-3' id="six">6</button>
+            <button className='col-3' id="subtract">-</button>
             {/* Fourth row */}
-            <button id="one"></button>
-            <button id="two"></button>
-            <button id="three"></button>
-            <button id="add"></button>
+            <button className='col-3' id="one">1</button>
+            <button className='col-3' id="two">2</button>
+            <button className='col-3' id="three">3</button>
+            <button className='col-3' id="add">+</button>
             {/* Fifth row */}
-            <button id="zero"></button>
-            <button id="decimal"></button>
-            <button id="equals"></button>
+            <button className='col-6' id="zero">0</button>
+            <button className='col-3' id="decimal">.</button>
+            <button className='col-3' id="equals">=</button>
           </div>
         </div>
       </div>
