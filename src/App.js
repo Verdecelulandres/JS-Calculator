@@ -18,6 +18,7 @@ class App extends React.Component {
     this.storingNums = this.storingNums.bind(this);
     this.defineMathOp = this.defineMathOp.bind(this);
     this.checkNumberConstraints = this.checkNumberConstraints.bind(this);
+    this.makeItDecimal = this.makeItDecimal.bind(this);
   }
 
   //When user clicks clear the state is returned to initial values
@@ -35,6 +36,7 @@ class App extends React.Component {
     return !isNaN(Number(val));
   }
 
+  //Checks if we should concatenate more numbers to the current one
   checkNumberConstraints() {
     if(this.state.currentDisplay.length >= 7 || this.state.currentDisplay === '0') { return false;}
     else {return true;}
@@ -85,6 +87,25 @@ class App extends React.Component {
     }
   }
 
+  makeItDecimal() {
+    let currentVal = this.state.currentDisplay;
+    
+      if(!currentVal.includes('.') && currentVal.length < 6){ //Doesn't contain a '.' already
+        this.setState({
+          currentDisplay: this.state.currentDisplay + '.'
+        });
+        if(this.state.mathOp === ''){
+          this.setState({
+            firstValue: this.state.firstValue + '.'
+          })
+        } else {
+          this.setState({
+            secondValue: this.state.secondValue + '.'
+          });
+        }
+      }
+  }
+
   // stores the math operation into the state
   defineMathOp(sign) {
     if(this.state.firstValue === '') {
@@ -123,7 +144,7 @@ class App extends React.Component {
           //Do some stuff
           break;
         case '.':
-          //Do some stuff
+          this.makeItDecimal();
           break;
         default:
           this.defineMathOp(btnVal);
