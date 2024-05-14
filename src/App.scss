@@ -66,6 +66,10 @@ button[class^="col-"] {
   color: white;
 }
 
+#clear:hover {
+  color: orange;
+}
+
 #equals {
   background-color: rgb(25, 25, 102);
   color: white;
@@ -76,6 +80,9 @@ button[class^="col-"] {
   background-color: rgb(55, 70, 29);
 }
 
+#equals:hover, #multiply:hover, #divide:hover, #subtract:hover, #add:hover {
+  color: orangered;
+}
 
 //Creates the grid system I will be using.
 @for $i from 1 through $columns {

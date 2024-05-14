@@ -47,7 +47,7 @@ class App extends React.Component {
             <button className='col-3' id="equals">=</button>
           </div>
         </div>
-        <h1>Coded by <span style={{color: 'darkcyan'}}>Andres Laverde</span></h1>
+        <h1>Coded by <a target='_blank'  href='https://andreslaverde.com/' style={{color: 'darkcyan'}}>Andres Laverde</a></h1>
       </div>
     );
 }
