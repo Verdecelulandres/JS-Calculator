@@ -17,6 +17,7 @@ class App extends React.Component {
     this.resetValues = this.resetValues.bind(this);
     this.storingNums = this.storingNums.bind(this);
     this.defineMathOp = this.defineMathOp.bind(this);
+    this.checkNumberConstraints = this.checkNumberConstraints.bind(this);
   }
 
   //When user clicks clear the state is returned to initial values
@@ -34,6 +35,11 @@ class App extends React.Component {
     return !isNaN(Number(val));
   }
 
+  checkNumberConstraints() {
+    if(this.state.currentDisplay.length >= 7 || this.state.currentDisplay === '0') { return false;}
+    else {return true;}
+  }
+
   //stores first and second values to wait for the "equals" call
   storingNums(num) {
     let isFirstVal = (this.state.firstValue !== '');
@@ -49,11 +55,13 @@ class App extends React.Component {
 
       //If there is no Math Operation defined then we want to continue concatenating numbers to the 1st val
     }else if(isFirstVal && !isMathOp){
+      if(this.checkNumberConstraints()){
       this.setState({
         firstValue: this.state.firstValue + num,
         currentDisplay: this.state.currentDisplay + num,
         operationDisplay: this.state.operationDisplay + num
       });
+    }
       //If there is already an operation defined we want to store the 2nd value
     }else if(isMathOp && !isSecondVal){
       this.setState({
@@ -61,6 +69,19 @@ class App extends React.Component {
         currentDisplay: num,
         operationDisplay: this.state.operationDisplay + num
       });
+      //There is already a 2nd value. We just want to concatenate more numbers to it
+    }else if(isMathOp && isSecondVal){
+      console.log('first value: ', this.state.firstValue );
+      console.log('math op: ', this.state.mathOp);
+      console.log('second value: ', this.state.secondValue );
+      console.log(this.checkNumberConstraints());
+      if(this.checkNumberConstraints()){
+        this.setState({
+          secondValue: this.state.secondValue + num,
+          currentDisplay: this.state.currentDisplay + num,
+          operationDisplay: this.state.operationDisplay + num
+        });
+      }
     }
   }
 
