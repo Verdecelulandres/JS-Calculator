@@ -5,12 +5,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstValue: '',
-      secondValue: '',
-      mathOp: '',
-      currentDisplay: '0',
-      operationDisplay: '',
-      previousOp: false
+     userInput: ['0'],
+     isFirst: true,
+     isDefault: true
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -26,12 +23,9 @@ class App extends React.Component {
   //When user clicks clear the state is returned to initial values
   resetValues() {
     this.setState({
-      firstValue: '',
-      secondValue: '',
-      mathOp: '',
-      currentDisplay: '0',
-      operationDisplay: '',
-      previousOp: false
+      isFirst: true,
+      userInput: ['0'],
+      isDefault: true
     });
   }
   //Returns true if the string provided is a umber and false otherwise
@@ -39,170 +33,169 @@ class App extends React.Component {
     return !isNaN(Number(val));
   }
 
-  //Checks if we should concatenate more numbers to the current one
-  checkNumberConstraints() {
-    if(this.state.currentDisplay.length >= 7 || this.state.currentDisplay === '0') { return false;}
-    else {return true;}
+  //Checks if we should concatenate more numbers to the current one and if the expresion is not long enough already
+  checkNumberConstraints(currentVal) {
+   /* if(this.state.userInput.length <= 9 && currentVal.length <= 6){
+        return true;
+    } else {
+      return false;
+    }
+ */
+return true;
   }
 
   //stores first and second values to wait for the "equals" call
   storingNums(num) {
-    let isFirstVal = (this.state.firstValue !== '');
-    let isMathOp = (this.state.mathOp !== '');
-    let isSecondVal = (this.state.secondValue !== '');
-    //If the 1st val is empty we just store the number passed
-    if(!isFirstVal){
-      this.setState({
-        firstValue: num,
-        currentDisplay: num,
-        operationDisplay: this.state.operationDisplay + num
-      });
+   
+    //If the inputted number is not the first value
+    if(!this.state.isFirst) {
+      let currentVal = this.state.userInput[this.state.userInput.length-1];
+  
+    //If the current value is not a number then we should just push the new value, if teh expression is still in the imposed limits
+      if(!this.isNumber(currentVal)){
+        if(this.checkNumberConstraints(currentVal)){
+          this.setState({
+            userInput: [...this.state.userInput, num]
+          });
+        }
 
-      //If there is no Math Operation defined then we want to continue concatenating numbers to the 1st val
-    }else if(isFirstVal && !isMathOp){
-      if(this.checkNumberConstraints()){
-      this.setState({
-        firstValue: this.state.firstValue + num,
-        currentDisplay: this.state.currentDisplay + num,
-        operationDisplay: this.state.operationDisplay + num
-      });
-    }
-      //If there is already an operation defined we want to store the 2nd value
-    }else if(isMathOp && !isSecondVal){
-      this.setState({
-        secondValue: num,
-        currentDisplay: num,
-        operationDisplay: this.state.operationDisplay + num
-      });
-      //There is already a 2nd value. We just want to concatenate more numbers to it
-    }else if(isMathOp && isSecondVal){
-      console.log('first value: ', this.state.firstValue );
-      console.log('math op: ', this.state.mathOp);
-      console.log('second value: ', this.state.secondValue );
-      console.log(this.checkNumberConstraints());
-      if(this.checkNumberConstraints()){
-        this.setState({
-          secondValue: this.state.secondValue + num,
-          currentDisplay: this.state.currentDisplay + num,
-          operationDisplay: this.state.operationDisplay + num
-        });
+        //If the current value is a number then we want to concatenate the new number to it
+      }else {
+       
+        if(this.checkNumberConstraints(currentVal)){
+          if(currentVal === '0' && num === '0') {return;} //No leading zeros
+        
+          currentVal += num;
+      
+          let updatedArr = this.state.userInput.slice(0,-1)
+          updatedArr.push(currentVal);
+    
+          this.setState({
+          userInput: updatedArr
+          });
+        }
       }
+     //If is the first number inputted then just push it to the array, replacing the placeholder.
+    } else {
+      this.setState({
+        isFirst: false,
+        userInput: [num],
+        isDefault: false
+      });
     }
   }
 
   makeItDecimal() {
-    let currentVal = this.state.currentDisplay;
-    
-      if(!currentVal.includes('.') && currentVal.length < 6){ //Doesn't contain a '.' already
-        this.setState({
-          currentDisplay: this.state.currentDisplay + '.',
-          operationDisplay: this.state.operationDisplay + '.'
-        });
-        if(this.state.mathOp === ''){
+    if(this.state.isFirst){
+      window.alert('Please input a number first');
+    } else {
+      let currentVal = this.state.userInput[this.state.userInput.length-1];
+      if(this.isNumber(currentVal)){
+        //Doesn't contain a '.' already
+        if(!(currentVal.includes('.')) /*&& currentVal.length < 5*/){ 
+          currentVal += '.';
+          let updatedArr = this.state.userInput.slice(0,-1)
+          updatedArr.push(currentVal);
           this.setState({
-            firstValue: this.state.firstValue + '.'
-          })
-        } else {
-          this.setState({
-            secondValue: this.state.secondValue + '.'
+          userInput: updatedArr
           });
         }
       }
+    }
   }
-
   // stores the math operation into the state
   defineMathOp(sign) {
-    let currentVal = this.state.currentDisplay;
-    let isPrevOp = this.state.previousOp;
 
-    if(currentVal.indexOf('.')<0||currentVal.indexOf('.') !== currentVal.length-1){
-      if(this.state.firstValue === '') {
-        this.setState({
-          currentDisplay: 'Please enter a number first',
-          operationDisplay: 'Press clear to exit'
-        });
-        //Only set it if there is no sign
-      } else if(this.state.mathOp === '' && !isPrevOp){
-        this.setState({
-          mathOp: sign,
-          currentDisplay: sign,
-          operationDisplay: this.state.operationDisplay + sign
-        });
-      } else if(this.state.mathOp === '' && isPrevOp){
-        this.setState({
-          mathOp: sign,
-          currentDisplay: sign,
-          operationDisplay: this.state.firstValue + sign
-        });
-      } else if (this.state.mathOp !== '') {
-        this.setState({
-          mathOp: sign,
-          currentDisplay: sign,
-          operationDisplay: this.state.operationDisplay.substring(0, this.state.operationDisplay.length-1) + sign
-        });
+    let currentVal = this.state.userInput[this.state.userInput.length-1];
+    // only push the math op if the current value is a number
+      if(this.isNumber(currentVal)){ 
+        // if the current number doesn't have the decimal point missplaced we can continue
+        if(currentVal.indexOf('.')<0||currentVal.indexOf('.') !== currentVal.length-1){
+          this.setState({
+            userInput: [...this.state.userInput, sign],
+            isFirst: false
+          });
+        } 
+      } else {
+        //If the current value is a math op then we will change it with the new one inputted except if it is a negative sign
+        if(sign === '-'){
+          this.setState({
+            userInput: [...this.state.userInput, sign]
+          });
+        } else {
+          let updatedArr = this.state.userInput.slice(0,-1);
+          updatedArr.push(sign);
+          this.setState({
+            userInput: updatedArr
+          });
+        }  
+    }
+  }
+
+  
+  // makes the math operation and stores it in the first array value
+  doSomeMath() {
+    if(this.state.isFirst){
+      window.alert('Please input a number first');
+    } else {
+      //Only attempt an operation if the expression is valid
+      if(this.state.userInput.length > 1) {
+        try {
+          // Evaluate the expression while ensuring correct order of operations
+          let expression = this.state.userInput.join(' ').replace(/x/g, '*');
+          let result = eval(expression).toString();
+          
+          // Store the result and reset input
+          this.setState({
+            userInput: [result],
+            isFirst: true
+          });
+        } catch (error) {
+          console.error("Error in evaluating expression:", error);
+          this.resetValues();
+        }
       }
     }
   }
   
-  // makes the math operation and stores it in the first value
-  doSomeMath() {
-  //The variables defined in this function are just for ease of writting.  
-    let isFirstVal = (this.state.firstValue !== '');
-    let isMathOp = (this.state.mathOp !== '');
-    let isSecondVal = (this.state.secondValue !== '');
-
-    //Only attempt an operation if all the values are present
-    if(isFirstVal && isMathOp && isSecondVal){
-        let firstNum = this.state.firstValue;
-        let secondNum = this.state.secondValue;
-        let mathSign = this.state.mathOp;
-        //Store the resulted number in a string for ease of checking constraints
-        let result = eval(firstNum + mathSign + secondNum).toString();
-
-       this.setState({
-          firstValue: result,
-          secondValue: '',
-          mathOp: '',
-          currentDisplay: result,
-          operationDisplay: this.state.operationDisplay + '=' + result,
-          previousOp: true
-        });
-        
-    }
-  }
 
   // Gets the button value and redirects to the correct function
   handleClick(btnVal) {
 
     if(this.isNumber(btnVal)){
       this.storingNums(btnVal);
+    } else if(btnVal==='CLR'){
+      this.resetValues();
+    } else {
+      //Only accept non numerical input if it is not the first input
+      if(!this.state.isDefault){
+        switch(btnVal){
+          case '=':
+            this.doSomeMath();
+            break;
+          case '.':
+            this.makeItDecimal();
+            break;
+          default:
+            this.defineMathOp(btnVal);
+            break;
+        }
     }
-    else {
-      switch(btnVal){
-        case 'CLR':
-          this.resetValues();
-          break;
-        case '=':
-          this.doSomeMath();
-          break;
-        case '.':
-          this.makeItDecimal();
-          break;
-        default:
-          this.defineMathOp(btnVal);
-          break;
-      }
-    }
+  }
   
   }
 
   render() {
+    let fulloperation = '';
+    if(!this.state.isDefault){
+      fulloperation = this.state.userInput.join(' ');
+    }
     return (
       <div className="App">
         <div className='calculator-body'>
-          <div id='display' className='display-container'>
-            <div className='full-operation'>{this.state.operationDisplay}</div>
-            <div className='current-value'>{this.state.currentDisplay}</div>
+          <div className='display-container'>
+            <div className='full-operation'>{fulloperation}</div>
+            <div id='display' className='current-value'>{this.state.userInput[this.state.userInput.length-1]}</div>
           </div>
           <div className='btn-container'>
             {/* First row */}
