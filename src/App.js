@@ -35,12 +35,12 @@ class App extends React.Component {
 
   //Checks if we should concatenate more numbers to the current one and if the expresion is not long enough already
   checkNumberConstraints(currentVal) {
-   /* if(this.state.userInput.length <= 9 && currentVal.length <= 6){
+   if(this.state.userInput.length <= 9 && currentVal.length <= 6){
         return true;
     } else {
       return false;
     }
- */
+ 
 return true;
   }
 
@@ -92,7 +92,7 @@ return true;
       let currentVal = this.state.userInput[this.state.userInput.length-1];
       if(this.isNumber(currentVal)){
         //Doesn't contain a '.' already
-        if(!(currentVal.includes('.')) /*&& currentVal.length < 5*/){ 
+        if(!(currentVal.includes('.')) && currentVal.length < 5){ 
           currentVal += '.';
           let updatedArr = this.state.userInput.slice(0,-1)
           updatedArr.push(currentVal);
@@ -113,18 +113,33 @@ return true;
         if(currentVal.indexOf('.')<0||currentVal.indexOf('.') !== currentVal.length-1){
           this.setState({
             userInput: [...this.state.userInput, sign],
-            isFirst: false
+            isFirst:false
           });
         } 
       } else {
         //If the current value is a math op then we will change it with the new one inputted except if it is a negative sign
-        if(sign === '-'){
+       if(sign === '-'){
           this.setState({
             userInput: [...this.state.userInput, sign]
           });
+          console.log('after negative sign: ', this.state.userInput);
         } else {
+          console.log('before sign: ', this.state.userInput);
+
           let updatedArr = this.state.userInput.slice(0,-1);
+          console.log('Should remove last char: ', updatedArr);
           updatedArr.push(sign);
+          console.log('After new sign pushed: ', updatedArr);
+          //Removing all math symbols until we get a number
+          for(let i = updatedArr.length-2; i>=0; i--) {
+            console.log('in for-loop. elmnt at i= ', updatedArr[i]);
+            if(!this.isNumber(this.state.userInput[i])){
+              updatedArr.splice(i,i);
+            } else {
+              continue;
+            }
+          }
+          console.log('After removing previos symbols: ', updatedArr)
           this.setState({
             userInput: updatedArr
           });
