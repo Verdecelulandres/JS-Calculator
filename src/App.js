@@ -9,7 +9,8 @@ class App extends React.Component {
       secondValue: '',
       mathOp: '',
       currentDisplay: '0',
-      operationDisplay: ''
+      operationDisplay: '',
+      previousOp: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -29,7 +30,8 @@ class App extends React.Component {
       secondValue: '',
       mathOp: '',
       currentDisplay: '0',
-      operationDisplay: ''
+      operationDisplay: '',
+      previousOp: false
     });
   }
   //Returns true if the string provided is a umber and false otherwise
@@ -110,18 +112,27 @@ class App extends React.Component {
 
   // stores the math operation into the state
   defineMathOp(sign) {
-    if(this.state.currentDisplay.indexOf('.') !== this.state.currentDisplay.length-1){
+    let currentVal = this.state.currentDisplay;
+    let isPrevOp = this.state.previousOp;
+
+    if(currentVal.indexOf('.')<0||currentVal.indexOf('.') !== currentVal.length-1){
       if(this.state.firstValue === '') {
         this.setState({
           currentDisplay: 'Please enter a number first',
           operationDisplay: 'Press clear to exit'
         });
         //Only set it if there is no sign
-      } else if(this.state.mathOp === ''){
+      } else if(this.state.mathOp === '' && !isPrevOp){
         this.setState({
           mathOp: sign,
           currentDisplay: sign,
           operationDisplay: this.state.operationDisplay + sign
+        });
+      } else if(this.state.mathOp === '' && isPrevOp){
+        this.setState({
+          mathOp: sign,
+          currentDisplay: sign,
+          operationDisplay: this.state.firstValue + sign
         });
       } else if (this.state.mathOp !== '') {
         this.setState({
@@ -132,12 +143,30 @@ class App extends React.Component {
       }
     }
   }
+  
   // makes the math operation and stores it in the first value
   doSomeMath() {
+  //The variables defined in this function are just for ease of writting.  
     let isFirstVal = (this.state.firstValue !== '');
     let isMathOp = (this.state.mathOp !== '');
     let isSecondVal = (this.state.secondValue !== '');
+
+    //Only attempt an operation if all the values are present
     if(isFirstVal && isMathOp && isSecondVal){
+        let firstNum = this.state.firstValue;
+        let secondNum = this.state.secondValue;
+        let mathSign = this.state.mathOp;
+        //Store the resulted number in a string for ease of checking constraints
+        let result = eval(firstNum + mathSign + secondNum).toString();
+
+       this.setState({
+          firstValue: result,
+          secondValue: '',
+          mathOp: '',
+          currentDisplay: result,
+          operationDisplay: this.state.operationDisplay + '=' + result,
+          previousOp: true
+        });
         
     }
   }
@@ -178,7 +207,7 @@ class App extends React.Component {
           <div className='btn-container'>
             {/* First row */}
             <button className='col-9' id="clear" value='CLR' onClick={() => this.handleClick('CLR')}>clear</button>
-            <button className='col-3' id="multiply" value='x' onClick={() => this.handleClick('x')}>X</button>
+            <button className='col-3' id="multiply" value='x' onClick={() => this.handleClick('*')}>X</button>
             {/* second row */}
             <button className='col-3' id="seven" value='7' onClick={() => this.handleClick('7')}>7</button>
             <button className='col-3' id="eight" value='8' onClick={() => this.handleClick('8')}>8</button>
