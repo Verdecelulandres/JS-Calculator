@@ -19,6 +19,7 @@ class App extends React.Component {
     this.defineMathOp = this.defineMathOp.bind(this);
     this.checkNumberConstraints = this.checkNumberConstraints.bind(this);
     this.makeItDecimal = this.makeItDecimal.bind(this);
+    this.doSomeMath = this.doSomeMath.bind(this);
   }
 
   //When user clicks clear the state is returned to initial values
@@ -131,6 +132,15 @@ class App extends React.Component {
       }
     }
   }
+  // makes the math operation and stores it in the first value
+  doSomeMath() {
+    let isFirstVal = (this.state.firstValue !== '');
+    let isMathOp = (this.state.mathOp !== '');
+    let isSecondVal = (this.state.secondValue !== '');
+    if(isFirstVal && isMathOp && isSecondVal){
+        
+    }
+  }
 
   // Gets the button value and redirects to the correct function
   handleClick(btnVal) {
@@ -144,7 +154,7 @@ class App extends React.Component {
           this.resetValues();
           break;
         case '=':
-          //Do some stuff
+          this.doSomeMath();
           break;
         case '.':
           this.makeItDecimal();
